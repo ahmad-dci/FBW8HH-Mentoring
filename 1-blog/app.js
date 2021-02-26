@@ -84,7 +84,18 @@ app.post('/blog', (req, res) => {
 // });
 
 mongoDb.addComment(req.body.name, new Date(), req.body.comment, req.body.email).then(() => {
-    res.render('blog', {commentsArr});
+
+
+
+    mongoDb.getComments().then(comments => {
+        res.render('blog', {commentsArr: comments});
+    }).catch(error => {
+        console.log(error);
+        res.render('blog', {commentsArr: []});
+    })
+
+
+
 }).catch(error => {
     res.send(error.message);
 })
