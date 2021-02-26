@@ -38,7 +38,20 @@ function addComment(name, commentDate, comment, email){
     });
 }
 
+function getComments(){
+    return new Promise((resolve, reject) => {
+        const db = client.db('blog');
+        // find method gonna return all documents inside the collection 
+        db.collection('comments').find().toArray().then(comments => {
+            resolve(comments);
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
+
 module.exports = {
     connect,
-    addComment
+    addComment,
+    getComments
 }

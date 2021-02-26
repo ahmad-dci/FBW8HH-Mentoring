@@ -4,7 +4,7 @@ const mongoDb = require('./models/mongodb');
 const app = express();
 
 mongoDb.connect().then(() => {
-    console.log('connect to database');
+    console.log('connected to database');
 }).catch(error => {
     console.log('connection to database faild');
     console.log(error);
@@ -40,23 +40,23 @@ app.get('/about', (req, res) => {
 
 // create a comments array to save the comments inside
 
-const commentsArr = [
-    {
-        name: "Ahmad",
-        commentDate: new Date(2021, 2, 17, 10),
-        comment: "Hello this is my first comment"
-    },
-    {
-        name: "Basem",
-        commentDate: new Date(2021, 2, 16, 9),
-        comment: "Hello I am Basem"
-    },
-    {
-        name: "Nisreen",
-        commentDate: new Date(2021, 2, 13, 8),
-        comment: "I liked this blog"
-    }
-];
+// const commentsArr = [
+//     {
+//         name: "Ahmad",
+//         commentDate: new Date(2021, 2, 17, 10),
+//         comment: "Hello this is my first comment"
+//     },
+//     {
+//         name: "Basem",
+//         commentDate: new Date(2021, 2, 16, 9),
+//         comment: "Hello I am Basem"
+//     },
+//     {
+//         name: "Nisreen",
+//         commentDate: new Date(2021, 2, 13, 8),
+//         comment: "I liked this blog"
+//     }
+// ];
 
 //Date.now();
 
@@ -64,22 +64,33 @@ const commentsArr = [
 app.get('/blog', (req, res) => {
     // console.log(__dirname);
     // res.sendFile( __dirname +  '/views/about.html');
-    res.render('blog', {commentsArr});
+    mongoDb.getComments().then(comments => {
+        res.render('blog', {commentsArr: comments});
+    }).catch(error => {
+        console.log(error);
+        res.render('blog', {commentsArr: []});
+    })
+    
 });
 
 app.post('/blog', (req, res) => {
     console.log(req.body);
 // push new data to commentsArr
 
-commentsArr.push({
-    name: req.body.name,
-    commentDate: new Date(),
-    comment: req.body.comment
-});
+// commentsArr.push({
+//     name: req.body.name,
+//     commentDate: new Date(),
+//     comment: req.body.comment
+// });
 
-
-
+mongoDb.addComment(req.body.name, new Date(), req.body.comment, req.body.email).then(() => {
     res.render('blog', {commentsArr});
+}).catch(error => {
+    res.send(error.message);
+})
+
+
+   
 })
 
 app.get('/contact', (req, res) => {
