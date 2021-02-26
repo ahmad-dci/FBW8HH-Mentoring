@@ -1,6 +1,14 @@
 const express = require('express');
+const mongoDb = require('./models/mongodb');
 
 const app = express();
+
+mongoDb.connect().then(() => {
+    console.log('connect to database');
+}).catch(error => {
+    console.log('connection to database faild');
+    console.log(error);
+})
 
 const port = process.env.PORT || 3000;
 
@@ -89,3 +97,6 @@ app.get('/marketing', (req, res) => {
 app.listen(port, () => {
     console.log(`App is running on port: ${port}` );
 })
+
+
+// mongodb+srv://<username>:<password>@cluster0.rmrmn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
