@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoDb = require('./models/mongodb');
+const emailsender = require('./models/emailSender');
 
 const app = express();
 
@@ -112,8 +113,19 @@ app.get('/contact', (req, res) => {
 
 app.post('/contact', (req, res) => {
     console.log(req.body);
-    res.json(1);
-})
+    if (req.body.name.length < 50 && req.body.email.length < 50 && req.body.subject.length < 50 && req.body.message.length < 500) {
+        emailsender.sendEmail(req.body.name, req.body.email, req.body.subject, req.body.message, (ok) => {
+            if (ok) {
+                res.json(1);
+            } else {
+                res.json(2);
+            }
+        })
+    } else {
+        res.json(3);
+    }
+    
+});
 
 app.get('/marketing', (req, res) => {
     // console.log(__dirname);

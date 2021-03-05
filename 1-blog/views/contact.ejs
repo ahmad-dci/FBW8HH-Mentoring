@@ -150,7 +150,25 @@
          }).then(response => {
             console.log(response);
             if(response.status === 200) {
-               console.log("message is sent");
+               //console.log("message is sent");
+               response.json().then(result => {
+                  if(result === 1) {
+                     alert('your message has been sent');
+                     nameInp.value = "";
+                     emailInp.value = "";
+                     subjectInp.value= "";
+                     messageInp.value = "";
+                  } else {
+                     if (result === 2){
+                        alert("your message has not been sent please contact the Admininstator");
+                     } else {
+                        if(result === 3) {
+                           alert("you have exceeded the entries limit");
+                        }
+                     }
+                     
+                  }
+               })
             }
          });
 
