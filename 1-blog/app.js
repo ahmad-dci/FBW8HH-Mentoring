@@ -110,6 +110,11 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 })
 
+app.post('/contact', (req, res) => {
+    console.log(req.body);
+    res.json(1);
+})
+
 app.get('/marketing', (req, res) => {
     // console.log(__dirname);
     // res.sendFile( __dirname +  '/views/about.html');

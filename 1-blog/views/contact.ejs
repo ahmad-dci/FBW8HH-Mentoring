@@ -50,29 +50,29 @@
             <div class="row">
                <div class="col-md-12">
                   <div class="full comment_form">
-                     <form action="index.html">
+                     <!-- <form action="/contact" method="POST"> -->
                         <fieldset>
                            <div class="col-md-12">
                               <div class="row">
                                  <div class="col-md-6">
-                                    <input type="text" name="name" placeholder="Name" required="#" />
-                                    <input type="email" name="email" placeholder="Email" required="#" />
-                                     <input type="text" name="subject" placeholder="subject" required="#" />
+                                    <input id="nameInp" type="text" name="name" placeholder="Name" required="#" />
+                                    <input id="emailInp" type="email" name="email" placeholder="Email" required="#" />
+                                    <input id="subjectInp" type="text" name="subject" placeholder="subject" required="#" />
                                  </div>
                                  <div class="col-md-6">
-                                    <textarea class="wdt" placeholder="Comment"></textarea>
+                                    <textarea id="messageInp" name="message" class="wdt" placeholder="Comment"></textarea>
                                  </div>
                               </div>
                               <div class="row margin_top_30">
                                  <div class="col-md-12">
                                     <div class="center">
-                                       <button>Send</button>
+                                       <button id="sendBtn">Send</button>
                                     </div>
                                  </div>
                               </div>
                            </div>
                         </fieldset>
-                     </form>
+                     <!-- </form> -->
                   </div>
                </div>
             </div>
@@ -121,6 +121,43 @@
           icon: image
         });
       }
+
+
+      // get dom elements
+      const nameInp = document.getElementById('nameInp');
+      const emailInp = document.getElementById('emailInp');
+      const subjectInp = document.getElementById('subjectInp');
+      const messageInp = document.getElementById('messageInp');
+      const sendBtn = document.getElementById('sendBtn');
+
+      // add click event listener to sendBtn
+      sendBtn.addEventListener('click', () => {
+         //alert("hi");
+         const sendData = {
+            name: nameInp.value,
+            email: emailInp.value,
+            subject: subjectInp.value,
+            message: messageInp.value
+         };
+
+         // use fetch to send the data to server side
+         fetch('/contact', {
+            method: "POST",
+            headers: {
+               "content-type": "application/json"
+            },
+            body: JSON.stringify(sendData)
+         }).then(response => {
+            console.log(response);
+            if(response.status === 200) {
+               console.log("message is sent");
+            }
+         });
+
+
+      });
+
+
     </script>
 
 
