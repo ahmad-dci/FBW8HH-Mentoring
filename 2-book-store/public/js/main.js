@@ -33,7 +33,4 @@ $(document).ready(function () {
 
 
 
-const regBtn = document.getElementById('regBtn');
-const regName = document.getElementById('regName');
-const regEmail = document.getElementById('regEmail');
-const regPassword = document.getElementById('regPassword');
+
