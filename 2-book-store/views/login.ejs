@@ -14,6 +14,7 @@
     <link href="/css/animate.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="/parsley/parsley.css">
     <!--[if lt IE 9]>
     <script src="/js/html5shiv.js"></script>
     <script src="/js/respond.min.js"></script>
@@ -180,13 +181,15 @@
                     <h2 class="or">OR</h2>
                 </div>
                 <div class="col-sm-4">
-                    <div class="signup-form">
+                    <div id="signupDiv" class="signup-form" data-parsley-validate>
                         <!--sign up form-->
                         <h2>New User Signup!</h2>
                         <!-- <form action="#"> -->
-                        <input id="regName" type="text" placeholder="Name" />
-                        <input id="regEmail" type="email" placeholder="Email Address" />
-                        <input id="regPassword" type="password" placeholder="Password" />
+                        <input id="regName" required data-parsley-length="[2, 15]" type="text" placeholder="Name" />
+                        <input id="regEmail" required data-parsley-length="[5, 25]" type="email"
+                            placeholder="Email Address" />
+                        <input id="regPassword" required data-parsley-length="[8, 20]" type="password"
+                            placeholder="Password" />
                         <button id="regBtn" class="btn btn-default">Signup</button>
                         <!-- </form> -->
                     </div>
@@ -369,6 +372,7 @@
     <script src="/js/jquery.prettyPhoto.js"></script>
     <script src="/js/main.js"></script>
     <script src="/parsley/parsley.js"></script>
+    <script src="/parsley/i18n/en.js"></script>
     <script>
         // get html dom elements
         const regBtn = document.getElementById('regBtn');
@@ -380,11 +384,35 @@
         regBtn.addEventListener('click', () => {
             // send user data to server side using fetch
 
-            const sendData = {
-                name: regName.value,
-                email: regEmail.value,
-                password: regPassword.value
+            let valid = $('#signupDiv').parsley().validate({ force: true });
+            // console.log(valid);
+
+            if (valid) {
+                const sendData = {
+                    name: regName.value,
+                    email: regEmail.value,
+                    password: regPassword.value
+                }
+                fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'content-type' : 'application/json'
+                    },
+                    body: JSON.stringify(sendData)
+                }).then(response => {
+                    if(response.status === 200) {
+                        response.json().then(data => {
+                            if(data === 1) {
+                                console.log('success');
+                            } else {
+                                console.log('faild');
+                            }
+                        })
+                    }
+                })
+
             }
+
 
 
 
