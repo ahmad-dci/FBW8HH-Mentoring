@@ -27,6 +27,10 @@ app.get('/login', (req, res) => {
 
 // create a rout to get register data
 app.post('/signup', (req, res) => {
+    // responses map
+    // 1: registration is done
+    // 2: unknown error
+    // 3: user email is already exist
     console.log(req.body);
 
     const {name, email, password} = req.body;
@@ -34,7 +38,12 @@ app.post('/signup', (req, res) => {
         res.json(1);
     }).catch(error => {
         console.log(error);
-        res.json(2);
+        if (error === 3) {
+            res.json(3)
+        } else {
+            res.json(2);
+        }
+        
     })
 
     

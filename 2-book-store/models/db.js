@@ -59,7 +59,7 @@ function connect() {
 function addUser (name, email, password) {
     return new Promise((resolve, reject) => {
         connect().then(() => {
-            bcrypt.hash(password, 20, (err, hashedPassword) =>{
+            bcrypt.hash(password, 10, (err, hashedPassword) =>{
                 if(!err) {
                     // save to data base
                     const verificationCode = emailToken(16, {type: 'number'});
@@ -73,7 +73,12 @@ function addUser (name, email, password) {
                     newUser.save().then(() => {
                         resolve();
                     }).catch(error =>{
-                        reject(error)
+                        if (error.code === 11000) {
+                            reject(3)
+                        } else {
+                            reject(error)
+                        }
+                        
                     })
 
                 } else {
