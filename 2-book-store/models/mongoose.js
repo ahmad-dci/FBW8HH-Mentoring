@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const emailToken = require('generate-sms-verification-code');
 const connectionString = 'mongodb+srv://bookstore_user:!234qweR@cluster0.rmrmn.mongodb.net/bookstore?retryWrites=true&w=majority';
 
 const Schema = mongoose.Schema;
@@ -52,5 +54,21 @@ function connect() {
             })
         }
     })
+}
+
+function addUser (name, email, password) {
+    return new Promise((resolve, reject) => {
+        connect().then(() => {
+            bcrypt.hash(password, 'FBW8', (err, hashedPassword) =>{
+                if(!err) {
+                    // save to data base
+
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    })
+    
 }
 
