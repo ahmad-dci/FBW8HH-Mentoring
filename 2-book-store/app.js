@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('./models/db');
 
 const app = express();
 
@@ -27,7 +28,16 @@ app.get('/login', (req, res) => {
 // create a rout to get register data
 app.post('/signup', (req, res) => {
     console.log(req.body);
-    res.json(1);
+
+    const {name, email, password} = req.body;
+    db.addUser(name, email, password).then(() => {
+        res.json(1);
+    }).catch(error => {
+        console.log(error);
+        res.json(2);
+    })
+
+    
 })
 
 app.listen(port, () => {

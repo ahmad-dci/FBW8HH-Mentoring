@@ -59,16 +59,33 @@ function connect() {
 function addUser (name, email, password) {
     return new Promise((resolve, reject) => {
         connect().then(() => {
-            bcrypt.hash(password, 'FBW8', (err, hashedPassword) =>{
+            bcrypt.hash(password, 20, (err, hashedPassword) =>{
                 if(!err) {
                     // save to data base
+                    const verificationCode = emailToken(16, {type: 'number'});
+                    const newUser = new Users({
+                        name,
+                        email,
+                        password: hashedPassword,
+                        verificationCode,
+                        verified: false
+                    });
+                    newUser.save().then(() => {
+                        resolve();
+                    }).catch(error =>{
+                        reject(error)
+                    })
 
                 } else {
                     reject(err)
                 }
             })
+        }).catch(error => {
+            reject(error);
         })
     })
-    
 }
 
+module.exports = {
+    addUser
+}
