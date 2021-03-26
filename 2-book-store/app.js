@@ -56,7 +56,6 @@ app.get('/verify', (req, res) => {
         //1- verification Code match a user and user not verified so we suppose to save verified as true
         //2- user is already verified verified = true , return a message that use is already verified
         //3- can not find a user matches the verification Code also we need to return a message
-
     db.verifyUser(code).then(() => {
         res.send('your email address is verified you can login now');
     }).catch(error => {
@@ -75,6 +74,14 @@ app.get('/verify', (req, res) => {
                 break;
         }
     })
+})
+
+app.post('/login', (req, res) => {
+// validate the login inputs using parsley
+// send data using fetch to server side if it is valid
+// console data on the server
+console.log(req.body);
+
 })
 
 app.listen(port, () => {

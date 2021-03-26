@@ -165,15 +165,16 @@
                     <div class="login-form">
                         <!--login form-->
                         <h2>Login to your account</h2>
-                        <form action="#">
-                            <input type="text" placeholder="Name" />
-                            <input type="email" placeholder="Email Address" />
+                        <div id="loginDiv" data-parsley-validate>
+                            
+                            <input id="logEmail" data-parsley-length="[5, 50]" required type="email" placeholder="Email Address" />
+                            <input id="logPassword" data-parsley-length="[8, 20]" required type="password" placeholder="password" />
                             <span>
                                 <input type="checkbox" class="checkbox">
                                 Keep me signed in
                             </span>
-                            <button type="submit" class="btn btn-default">Login</button>
-                        </form>
+                            <button id="logBtn" class="btn btn-default">Login</button>
+                        </div>
                     </div>
                     <!--/login form-->
                 </div>
@@ -457,6 +458,36 @@
             document.getElementById('modalCloseBtn').className =`btn btn-${style}`;
             $('#resultModal').modal('show');
         }
+
+        document.getElementById('logBtn').addEventListener('click', () => {
+            let valid = $('#loginDiv').parsley().validate({ force: true });
+            if(valid) {
+                const data = {
+                    email: document.getElementById('logEmail').value,
+                    password: document.getElementById('logPassword').value
+                }
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => {
+                    if (response.status === 200){
+                        response.json().then(data => {
+
+                        }).catch(error => {
+                            showModal('Error', 'Wrong data', 'danger')
+                        })
+                    } else {
+                        showModal('Error', 'Wrong response', 'danger')
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    showModal('Error', 'can not send data', 'danger')
+                })
+            }
+        })
 
     </script>
 </body>
