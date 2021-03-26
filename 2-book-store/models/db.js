@@ -103,6 +103,36 @@ function addUser (name, email, password) {
     })
 }
 
+function verifyUser(code) {
+    return new Promise((resolve, reject) => {
+        connect().then(() => {
+            Users.findOne({verificationCode: code}).then(user => {
+                if (user) {
+                    if (user.verified) {
+                        reject(2);
+                    } else {
+                        Users.updateOne({_id: user._id}, {verified: true}).then(() => {
+                            resolve()
+                        }).catch(error => {
+                            console.log(error);
+                            reject(4);
+                        })
+                    }
+                } else {
+                    reject(3);
+                }
+            }).catch(error => {
+                console.log(error);
+                reject(4);
+            })
+        }).catch(error => {
+            console.log(error);
+            reject(4);
+        })
+    })
+}
+
 module.exports = {
-    addUser
+    addUser,
+    verifyUser
 }

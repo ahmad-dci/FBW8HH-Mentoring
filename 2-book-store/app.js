@@ -45,8 +45,36 @@ app.post('/signup', (req, res) => {
         }
         
     })
+})
 
-    
+app.get('/verify', (req, res) => {
+    //console.log(req.params); // get url rout parameter http://localhost:3000/verify/4704631478148936   and this is the rout /verify/:code
+    console.log(req.query);// get url parameters http://localhost:3000/verify?code=4704631478148936 
+    const {code} = req.query;
+        // create in db.js a method will take [code] as a parameter
+        //this method suppose to check the verification Code and to return one of these cases
+        //1- verification Code match a user and user not verified so we suppose to save verified as true
+        //2- user is already verified verified = true , return a message that use is already verified
+        //3- can not find a user matches the verification Code also we need to return a message
+
+    db.verifyUser(code).then(() => {
+        res.send('your email address is verified you can login now');
+    }).catch(error => {
+        switch (error) {
+            case 2:
+                res.send('user is already verified');
+                break;
+            case 3:
+                res.send('the link is wrong try to sign up again');
+                break;
+            case 4:
+                res.send('server error please contact the admin');
+                break;
+        
+            default:
+                break;
+        }
+    })
 })
 
 app.listen(port, () => {
