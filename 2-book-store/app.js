@@ -87,6 +87,13 @@ console.log(req.body);
 // 3- user exist but the password is wrong
 // 4- username is exist and paswword match but user is not verified
 
+db.checkLogin(req.body.email, req.body.password).then(result => {
+    res.json(result)
+}).catch(error => {
+    console.log(error);
+    res.json(5);
+})
+
 })
 
 app.listen(port, () => {

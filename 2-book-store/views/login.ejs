@@ -475,7 +475,28 @@
                 }).then(response => {
                     if (response.status === 200){
                         response.json().then(data => {
-
+                            switch (data) {
+                                case 1:
+                                    // login success
+                                    window.location = '/admin';
+                                    break;
+                                case 2:
+                                    // user is not exist
+                                    showModal('User is not exist', 'There is no user with the entered email.', 'warning')
+                                    break;
+                                case 3:
+                                    // user is not exist
+                                    showModal('Wrong Password', 'The password that you\'ve entered is wrong', 'danger')
+                                    break;
+                                case 4:
+                                    // user is not exist
+                                    showModal('User is not verified', 'Please verify your email so you can login', 'danger')
+                                    break;
+                            
+                                default:
+                                showModal('Error', 'Unknown error happened please contact the Admin', 'danger')
+                                    break;
+                            }
                         }).catch(error => {
                             showModal('Error', 'Wrong data', 'danger')
                         })
