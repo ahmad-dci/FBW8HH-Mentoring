@@ -132,7 +132,37 @@ function verifyUser(code) {
     })
 }
 
+function checkLogin(email, password) {
+    return new Promise((resolve, reject) => {
+        connect().then(() => {
+            Users.findOne({email}).then(user => {
+                if(user) {
+                    // user is exist
+                    bcrypt.compare(password, user.password, function(err, result) {
+                        if (result) {
+                            if(user.verified) {
+                                resolve(1)
+                            } else {
+                                resolve(4)
+                            }
+                        } else {
+                            resolve(3)
+                        }
+                    });
+                } else {
+                    // user is not exist
+                    resolve(2)
+                }
+            }).catch(error => {
+                reject(error)
+            })
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
 module.exports = {
     addUser,
-    verifyUser
+    verifyUser,
+    checkLogin
 }

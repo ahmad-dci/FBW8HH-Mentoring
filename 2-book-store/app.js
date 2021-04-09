@@ -81,6 +81,11 @@ app.post('/login', (req, res) => {
 // send data using fetch to server side if it is valid
 // console data on the server
 console.log(req.body);
+// create a method on db.js called checkLogin(email, password)
+// 1- user with entered email exist and passowrd match and use is verified
+// 2- user is not exist
+// 3- user exist but the password is wrong
+// 4- username is exist and paswword match but user is not verified
 
 })
 
