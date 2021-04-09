@@ -1,5 +1,8 @@
 const express = require('express');
+const session = require('express-session');
+
 const db = require('./models/db');
+const adminRouter = require('./routers/adminrouts')
 
 const app = express();
 
@@ -16,6 +19,16 @@ const port = process.env.PORT || 3000;
 // posted data as json or using get or form
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+
+//add session middleware before any rout 
+app.use(session({
+    secret: 'Book Store',
+    cookie: {  maxAge: 5 * 1000}
+})
+);
+
+// any route START WITH '/admin' will be forward to adminrouter 
+app.use('/admin', adminRouter);
 
 app.get('/', (req, res) => {
     res.render('index')
@@ -88,13 +101,18 @@ console.log(req.body);
 // 4- username is exist and paswword match but user is not verified
 
 db.checkLogin(req.body.email, req.body.password).then(result => {
-    res.json(result)
+    if (result.num === 1) {
+        req.session.user = result.data;
+    }
+    res.json(result.num)
 }).catch(error => {
     console.log(error);
     res.json(5);
 })
 
 })
+
+
 
 app.listen(port, () => {
     console.log(`app is running on the port ${port}`);

@@ -141,17 +141,17 @@ function checkLogin(email, password) {
                     bcrypt.compare(password, user.password, function(err, result) {
                         if (result) {
                             if(user.verified) {
-                                resolve(1)
+                                resolve({num: 1, data: user})
                             } else {
-                                resolve(4)
+                                resolve({num: 4, data: null})
                             }
                         } else {
-                            resolve(3)
+                            resolve({num: 3, data: null})
                         }
                     });
                 } else {
                     // user is not exist
-                    resolve(2)
+                    resolve({num: 2, data: null})
                 }
             }).catch(error => {
                 reject(error)
