@@ -10,7 +10,13 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/pages/login.html')
+})
 
+app.get('/chat', (req, res) => {
+    res.sendFile(__dirname + '/pages/chat.html')
+})
 
 
 server.listen(port, () => {
