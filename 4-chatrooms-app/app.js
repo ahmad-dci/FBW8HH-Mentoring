@@ -26,7 +26,7 @@ app.post('/chat', (req, res) => {
     if (username.trim() && room.trim()) {
         res.render('chat', {username, room});
     } else {
-        res.redirect('/login')
+        res.redirect('/')
     }
 })
 
