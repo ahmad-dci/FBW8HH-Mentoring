@@ -23,7 +23,7 @@ app.use(express.json());
 //add session middleware before any rout 
 app.use(session({
     secret: 'Book Store',
-    cookie: {  maxAge: 5 * 1000}
+    cookie: {  maxAge: 60 * 1000}
 })
 );
 

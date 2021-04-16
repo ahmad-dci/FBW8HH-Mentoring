@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat application</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        #messagesDiv {
+            background-color: aqua;
+            min-height: 50vh;
+        }
+
+        #messageInp {
+            width: 80%;
+            height: 50px;
+        }
+
+        #sendBtn {
+            width: 19%;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="messagesDiv"></div>
+    <input type="text" id="messageInp">
+    <button id="sendBtn">Send</button>
+
+
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const messagesDiv = document.getElementById('messagesDiv');
+        const messageInp = document.getElementById('messageInp');
+        const sendBtn = document.getElementById('sendBtn');
+
+        sendBtn.addEventListener('click', () => {
+            socket.emit('msg', messageInp.value);
+
+            // show the written message on messagesDiv
+            const par = document.createElement('p')
+            par.innerText = messageInp.value;
+            messagesDiv.append(par);
+
+            // reset messageInp after sending the message
+            messageInp.value = '';
+        })
+
+        messageInp.addEventListener('keyup', (e) => {
+
+            if (e.keyCode === 13 && messageInp.value.trim()) {
+                socket.emit('msg', messageInp.value);
+
+                // show the written message on messagesDiv
+                const par = document.createElement('p')
+                par.innerText = messageInp.value;
+                messagesDiv.append(par);
+
+                // reset messageInp after sending the message
+                messageInp.value = '';
+            }
+
+        })
+
+        socket.on('welcomeMsg', data => {
+            const par = document.createElement('p')
+            par.innerText = data;
+            messagesDiv.append(par);
+        })
+
+        socket.on('incomeMessage', data => {
+            const par = document.createElement('p')
+            par.innerText = data;
+            messagesDiv.append(par);
+        })
+
+
+    </script>
+</body>
+
+</html>
