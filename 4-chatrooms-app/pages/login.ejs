@@ -12,15 +12,15 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form action="/chat" method="GET" >
+                <form action="/chat" method="POST" >
                     <div class="form-group">
                       <label for="nameInp">Your Name</label>
-                      <input type="text" class="form-control" id="nameInp"  placeholder="Enter Your Name">
+                      <input type="text" class="form-control" id="nameInp" name="username"  placeholder="Enter Your Name">
                       
                     </div>
                     <div class="form-group">
                       <label for="roomSelect">Room</label>
-                      <select id="roomSelect" class="form-control">
+                      <select id="roomSelect" class="form-control" name="room">
                           <option value="" selected>Select a Room</option>
                           <option value="frontEnd" >Front End</option>
                           <option value="BackEnd" >Back End</option>
