@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face recongniation</title>
+</head>
+<body>
+    <div>
+        <img width="400" id="myImage" src="./imgs/image.png" alt="">
+        <canvas id="myCanvas"   ></canvas>
+    </div>
+    
+
+    <script src="./js/face-api.js"></script>
+    <script>
+
+// (async()=>{
+
+// })()
+
+(async()=>{
+    const input = document.getElementById('myImage');
+    const canvas = document.getElementById('myCanvas');
+
+    canvas.height = input.offsetHeight;
+    canvas.width = input.offsetWidth;
+
+    
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(input,0 ,0 ,input.offsetWidth, input.offsetHeight);
+
+    const MODEL_URL = './js/weights';
+
+    await faceapi.loadSsdMobilenetv1Model(MODEL_URL);
+    await faceapi.loadFaceLandmarkModel(MODEL_URL);
+    await faceapi.loadFaceRecognitionModel(MODEL_URL);
+
+            
+    let fullFaceDescriptions = await faceapi.detectAllFaces(canvas).withFaceLandmarks().withFaceDescriptors()
+    console.log(fullFaceDescriptions);
+            
+    faceapi.draw.drawDetections(canvas, fullFaceDescriptions)
+})()
+       
+
+
+    </script>
+
+    
+</body>
+</html>
