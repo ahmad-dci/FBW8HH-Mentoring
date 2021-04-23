@@ -8,7 +8,8 @@
 </head>
 <body>
     <div>
-        <img width="400" id="myImage" src="./imgs/siblings.jpg" alt="">
+        <img width="400" id="myImage" src="./imgs/image.png" alt="">
+        <canvas id="myCanvas" width="400" height="400" ></canvas>
     </div>
     
 
@@ -20,16 +21,25 @@
 // })()
 
 (async()=>{
+    const input = document.getElementById('myImage');
+    const canvas = document.getElementById('myCanvas');
 
-        const MODEL_URL = './js/weights';
+    
 
-        await faceapi.loadSsdMobilenetv1Model(MODEL_URL);
-        await faceapi.loadFaceLandmarkModel(MODEL_URL);
-        await faceapi.loadFaceRecognitionModel(MODEL_URL);
+    const ctx = canvas.getContext("2d");
+        ctx.drawImage(input,0 ,0 ,400, 400);
 
-        const input = document.getElementById('myImage')
-        let fullFaceDescriptions = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors()
-        console.log(fullFaceDescriptions);
+    const MODEL_URL = './js/weights';
+
+    await faceapi.loadSsdMobilenetv1Model(MODEL_URL);
+    await faceapi.loadFaceLandmarkModel(MODEL_URL);
+    await faceapi.loadFaceRecognitionModel(MODEL_URL);
+
+            
+    let fullFaceDescriptions = await faceapi.detectAllFaces(canvas).withFaceLandmarks().withFaceDescriptors()
+    console.log(fullFaceDescriptions);
+            
+    faceapi.draw.drawDetections(canvas, fullFaceDescriptions)
 })()
        
 
